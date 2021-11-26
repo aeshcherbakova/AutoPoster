@@ -5,6 +5,7 @@ import ru.mephi.autoposting.model.User
 
 interface ProjectDataSource {
 
+    fun retrieveProjectsId(): Collection<Long>
     fun retrieveProjects(): Collection<Project>
     fun retrieveProjectById(id: Long): Project
     fun createProject(project: Project): Project

@@ -1,6 +1,9 @@
 package ru.mephi.autoposting.controller
 
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import ru.mephi.autoposting.model.PasswordsForChanging
 import ru.mephi.autoposting.model.User
 import ru.mephi.autoposting.service.UserService
 import javax.servlet.http.HttpServletRequest
@@ -10,15 +13,16 @@ import javax.servlet.http.HttpServletRequest
 class UserSettingsController(private val service: UserService) {
 
     @GetMapping
-    fun getUser() : User {
-        return User()
-    }
-    // TODO как достать инфу про текущего авторизованного юзера?
+    fun getUser(@RequestParam username: String) =
+        service.loadUserByUsername(username)//?.let {
+         //   ResponseEntity(it.id, HttpStatus.FOUND)
+       // } ?: ResponseEntity.status(HttpStatus.NOT_FOUND).build()
 
-    @PostMapping
-    fun changeInfo(user: User): String {
-        return "Successful"
-    }
-    //TODO изменение пароля и емейла
+
+    @PatchMapping
+    fun updatePassword(@RequestParam username: String, @RequestBody passwords: PasswordsForChanging) =
+        service.updatePassword(username, passwords)
+
+    // TODO: сделать аналогично изменение юзернейма и почты
 
 }
